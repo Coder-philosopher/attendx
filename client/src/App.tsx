@@ -13,6 +13,7 @@ import EventSuccess from "./pages/EventSuccess";
 import ClaimToken from "./pages/ClaimToken";
 import ClaimSuccess from "./pages/ClaimSuccess";
 import MyTokens from "./pages/MyTokens";
+import Achievements from "./pages/Achievements";
 
 function Router() {
   return (
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/claim/:eventId" component={ClaimToken} />
       <Route path="/claim-success/:eventId" component={ClaimSuccess} />
       <Route path="/my-tokens" component={MyTokens} />
+      <Route path="/achievements" component={Achievements} />
       <Route component={NotFound} />
     </Switch>
   );
