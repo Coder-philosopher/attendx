@@ -24,6 +24,26 @@ export class MongoDBStorage implements IStorage {
     try {
       // Handle case when id is a number (from memory storage)
       // MongoDB ObjectIds are strings, but we need to be compatible with both
+      
+      // Check if the ID is a partial MongoDB ID (like just "681" instead of full ObjectId)
+      // If it's a string less than 24 characters, try to match the beginning of ObjectIds
+      if (typeof id === 'string' && id.length < 24 && /^[0-9a-f]+$/i.test(id)) {
+        console.log(`Looking up event with partial ID: ${id}`);
+        // Find all events and filter by ID prefix
+        const events = await EventModel.find({});
+        const matchingEvent = events.find(event => 
+          event._id.toString().startsWith(id)
+        );
+        
+        if (matchingEvent) {
+          console.log(`Found event with matching ID prefix: ${matchingEvent._id}`);
+          return this.mongoEventToEvent(matchingEvent);
+        }
+        
+        return undefined;
+      }
+      
+      // Normal lookup by exact ID
       const event = await EventModel.findById(id);
       return event ? this.mongoEventToEvent(event) : undefined;
     } catch (error) {
@@ -65,19 +85,47 @@ export class MongoDBStorage implements IStorage {
     return this.mongoTokenClaimToTokenClaim(savedTokenClaim);
   }
 
-  async getTokenClaim(id: number): Promise<TokenClaim | undefined> {
+  async getTokenClaim(id: number | string): Promise<TokenClaim | undefined> {
     try {
+      // Check if the ID is a partial MongoDB ID
+      if (typeof id === 'string' && id.length < 24 && /^[0-9a-f]+$/i.test(id)) {
+        console.log(`Looking up token claim with partial ID: ${id}`);
+        // Find all token claims and filter by ID prefix
+        const tokenClaims = await TokenClaimModel.find({});
+        const matchingClaim = tokenClaims.find(claim => 
+          claim._id.toString().startsWith(id)
+        );
+        
+        if (matchingClaim) {
+          console.log(`Found token claim with matching ID prefix: ${matchingClaim._id}`);
+          return this.mongoTokenClaimToTokenClaim(matchingClaim);
+        }
+        
+        return undefined;
+      }
+      
+      // Normal lookup by exact ID
       const tokenClaim = await TokenClaimModel.findById(id);
       return tokenClaim ? this.mongoTokenClaimToTokenClaim(tokenClaim) : undefined;
     } catch (error) {
       if (error instanceof mongoose.Error.CastError) {
+        console.log(`Cast error finding token claim with id ${id}`, error);
         return undefined;
       }
+      console.error(`Error finding token claim with id ${id}:`, error);
       throw error;
     }
   }
 
-  async getTokenClaimsByEvent(eventId: number): Promise<TokenClaim[]> {
+  async getTokenClaimsByEvent(eventId: number | string): Promise<TokenClaim[]> {
+    // If we have a partial MongoDB ID, try to find the full ID first
+    if (typeof eventId === 'string' && eventId.length < 24 && /^[0-9a-f]+$/i.test(eventId)) {
+      const event = await this.getEvent(eventId);
+      if (event) {
+        eventId = event.id;
+      }
+    }
+    
     const tokenClaims = await TokenClaimModel.find({ eventId });
     return tokenClaims.map(claim => this.mongoTokenClaimToTokenClaim(claim));
   }
@@ -87,7 +135,15 @@ export class MongoDBStorage implements IStorage {
     return tokenClaims.map(claim => this.mongoTokenClaimToTokenClaim(claim));
   }
 
-  async hasWalletClaimedToken(eventId: number, walletAddress: string): Promise<boolean> {
+  async hasWalletClaimedToken(eventId: number | string, walletAddress: string): Promise<boolean> {
+    // If we have a partial MongoDB ID, try to find the full ID first
+    if (typeof eventId === 'string' && eventId.length < 24 && /^[0-9a-f]+$/i.test(eventId)) {
+      const event = await this.getEvent(eventId);
+      if (event) {
+        eventId = event.id;
+      }
+    }
+  
     const count = await TokenClaimModel.countDocuments({ 
       eventId,
       walletAddress 
