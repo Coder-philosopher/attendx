@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { getEvent, claimToken, hasWalletClaimedToken } from '../lib/events';
 import { claimCompressedToken } from '../lib/solana';
 import { useSolana } from '../providers/SolanaProvider';
+import { Event } from '@shared/schema';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,14 +21,14 @@ const ClaimToken: React.FC = () => {
   const { toast } = useToast();
 
   // Get event details
-  const { data: event, isLoading: isLoadingEvent, error: eventError } = useQuery({
+  const { data: event, isLoading: isLoadingEvent, error: eventError } = useQuery<Event>({
     queryKey: [`/api/events/${eventId}`],
     enabled: !!eventId,
     refetchOnWindowFocus: false,
   });
 
   // Check if wallet has already claimed
-  const { data: claimStatus, isLoading: isCheckingClaim } = useQuery({
+  const { data: claimStatus, isLoading: isCheckingClaim } = useQuery<{ hasClaimed: boolean }>({
     queryKey: [`/api/events/${eventId}/claims/${publicKey?.toString()}`],
     enabled: !!eventId && !!publicKey,
     refetchOnWindowFocus: false,

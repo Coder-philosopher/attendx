@@ -78,7 +78,11 @@ export const insertEventSchema = createInsertSchema(events)
   });
 
 export const insertTokenClaimSchema = createInsertSchema(tokenClaims)
-  .omit({ id: true, claimedAt: true });
+  .omit({ id: true, claimedAt: true })
+  .extend({
+    // Allow eventId to be either a number or a string for MongoDB compatibility
+    eventId: z.union([z.number(), z.string()]),
+  });
 
 export const insertAchievementSchema = createInsertSchema(achievements)
   .omit({ id: true, createdAt: true });

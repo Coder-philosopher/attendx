@@ -59,7 +59,7 @@ export async function mintCompressedToken(
 
 // Function to claim a token as an attendee
 export async function claimCompressedToken(
-  eventId: number,
+  eventId: number | string,
   tokenMintAddress: string,
   attendeeWallet: string
 ): Promise<{ transactionSignature: string }> {
