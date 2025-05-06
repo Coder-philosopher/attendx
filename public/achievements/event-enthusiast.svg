@@ -1,26 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="64" cy="64" r="60" fill="#9945FF" />
+  <circle cx="64" cy="64" r="60" fill="#14F195" />
   <circle cx="64" cy="64" r="50" fill="#1C1C1C" />
   
-  <!-- Badges collection -->
-  <circle cx="44" cy="48" r="12" fill="#FFFFFF" stroke="#14F195" stroke-width="2" />
-  <circle cx="84" cy="48" r="12" fill="#FFFFFF" stroke="#14F195" stroke-width="2" />
-  <circle cx="44" cy="88" r="12" fill="#FFFFFF" stroke="#14F195" stroke-width="2" />
-  <circle cx="84" cy="88" r="12" fill="#FFFFFF" stroke="#14F195" stroke-width="2" />
-  <circle cx="64" cy="68" r="15" fill="#FFFFFF" stroke="#14F195" stroke-width="3" />
+  <!-- Party hat -->
+  <path d="M50,35 L78,35 L64,78 Z" fill="#FF5E5E" />
+  <path d="M54,35 L74,35 L64,70 Z" fill="#FFEE00" />
   
-  <!-- Stars in badges -->
-  <path d="M44,43 L47,47 L52,48 L48,51 L49,56 L44,54 L39,56 L40,51 L36,48 L41,47 Z" fill="#FFD700" />
-  <path d="M84,43 L87,47 L92,48 L88,51 L89,56 L84,54 L79,56 L80,51 L76,48 L81,47 Z" fill="#FFD700" />
-  <path d="M44,83 L47,87 L52,88 L48,91 L49,96 L44,94 L39,96 L40,91 L36,88 L41,87 Z" fill="#FFD700" />
-  <path d="M84,83 L87,87 L92,88 L88,91 L89,96 L84,94 L79,96 L80,91 L76,88 L81,87 Z" fill="#FFD700" />
+  <!-- Hat band -->
+  <path d="M52,43 L76,43 L74,47 L54,47 Z" fill="#9945FF" />
   
-  <!-- Big star in center -->
-  <path d="M64,59 L68,66 L76,68 L70,73 L71,81 L64,77 L57,81 L58,73 L52,68 L60,66 Z" fill="#FFD700" />
+  <!-- Confetti -->
+  <rect x="30" y="45" width="4" height="2" rx="1" fill="#FF5E5E" transform="rotate(30 32 46)" />
+  <rect x="35" y="55" width="5" height="2" rx="1" fill="#FFEE00" transform="rotate(-15 37.5 56)" />
+  <rect x="90" y="48" width="4" height="2" rx="1" fill="#9945FF" transform="rotate(45 92 49)" />
+  <rect x="82" y="60" width="5" height="2" rx="1" fill="#14F195" transform="rotate(-30 84.5 61)" />
   
-  <!-- Enthusiasm burst -->
-  <circle cx="64" cy="68" r="20" stroke="#9945FF" stroke-width="1" stroke-dasharray="2,2" fill="none" />
-  <circle cx="64" cy="68" r="25" stroke="#9945FF" stroke-width="1" stroke-dasharray="2,2" fill="none" />
-  <circle cx="64" cy="68" r="30" stroke="#9945FF" stroke-width="1" stroke-dasharray="2,2" fill="none" />
+  <circle cx="42" cy="65" r="2" fill="#FF5E5E" />
+  <circle cx="86" cy="70" r="1.5" fill="#FFEE00" />
+  <circle cx="38" cy="75" r="1" fill="#14F195" />
+  <circle cx="78" cy="58" r="1.5" fill="#9945FF" />
+  
+  <!-- Event tokens -->
+  <g transform="translate(47, 90)">
+    <circle cx="0" cy="0" r="12" fill="#9945FF" opacity="0.8" />
+    <text x="0" y="4" font-family="Arial" font-size="7" font-weight="bold" text-anchor="middle" fill="#FFFFFF">EVENT</text>
+  </g>
+  
+  <g transform="translate(64, 90)">
+    <circle cx="0" cy="0" r="12" fill="#9945FF" opacity="0.9" />
+    <text x="0" y="4" font-family="Arial" font-size="7" font-weight="bold" text-anchor="middle" fill="#FFFFFF">EVENT</text>
+  </g>
+  
+  <g transform="translate(81, 90)">
+    <circle cx="0" cy="0" r="12" fill="#9945FF" />
+    <text x="0" y="4" font-family="Arial" font-size="7" font-weight="bold" text-anchor="middle" fill="#FFFFFF">EVENT</text>
+  </g>
+  
+  <!-- Enthusiasm stars -->
+  <path d="M45,60 L48,67 L55,68 L50,73 L51,80 L45,77 L39,80 L40,73 L35,68 L42,67 Z" 
+        fill="#FFEE00" opacity="0.8" />
+  
+  <path d="M83,60 L86,67 L93,68 L88,73 L89,80 L83,77 L77,80 L78,73 L73,68 L80,67 Z" 
+        fill="#FFEE00" opacity="0.8" />
+  
+  <!-- Number 20 badge -->
+  <circle cx="90" cy="40" r="14" fill="#FFEE00" />
+  <text x="90" y="46" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#000000">20</text>
 </svg>
