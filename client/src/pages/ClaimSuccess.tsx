@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useRoute } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { getEvent } from '../lib/events';
+import { Event } from '@shared/schema';
 import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,7 @@ const ClaimSuccess: React.FC = () => {
   // Use the ID directly as a string for MongoDB compatibility
   const eventId = params?.eventId || null;
 
-  const { data: event, isLoading, error } = useQuery({
+  const { data: event, isLoading, error } = useQuery<Event>({
     queryKey: [`/api/events/${eventId}`],
     enabled: !!eventId,
     refetchOnWindowFocus: false,

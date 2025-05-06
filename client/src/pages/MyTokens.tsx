@@ -8,14 +8,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle, LogOut } from 'lucide-react';
+import { AlertCircle, LogOut, Info as InfoIcon, ExternalLink } from 'lucide-react';
 import { truncateAddress } from '../lib/solana';
+import { TokenClaim, Event } from '@shared/schema';
 
 const MyTokens: React.FC = () => {
   const { publicKey, connected, disconnect } = useSolana();
 
-  const { data: tokenClaims, isLoading, error } = useQuery({
-    queryKey: publicKey ? [`/api/wallets/${publicKey.toString()}/claims`] : null,
+  const { data: tokenClaims, isLoading, error } = useQuery<(TokenClaim & { event: Event })[]>({
+    queryKey: publicKey ? [`/api/wallets/${publicKey.toString()}/claims`] : [],
     enabled: !!publicKey,
     refetchOnWindowFocus: false,
   });
@@ -118,7 +119,7 @@ const MyTokens: React.FC = () => {
         </Alert>
       ) : tokenClaims && tokenClaims.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {tokenClaims.map((claim: any) => (
+          {tokenClaims.map((claim: TokenClaim & { event: Event }) => (
             <Card key={claim.id} className="overflow-hidden">
               <img 
                 src={claim.event.imageUrl || "https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=400&q=80"} 
