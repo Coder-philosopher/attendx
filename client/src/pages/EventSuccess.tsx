@@ -12,7 +12,8 @@ import { Check, ExternalLink } from 'lucide-react';
 
 const EventSuccess: React.FC = () => {
   const [, params] = useRoute('/event-success/:id');
-  const eventId = params?.id ? parseInt(params.id, 10) : null;
+  // Use the ID directly as a string for MongoDB compatibility
+  const eventId = params?.id || null;
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { toast } = useToast();
 

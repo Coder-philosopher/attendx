@@ -14,7 +14,8 @@ import { AlertCircle, CheckCircle } from 'lucide-react';
 const ClaimToken: React.FC = () => {
   const [, params] = useRoute('/claim/:eventId');
   const [, navigate] = useLocation();
-  const eventId = params?.eventId ? parseInt(params.eventId, 10) : null;
+  // Use the ID directly as a string for MongoDB compatibility
+  const eventId = params?.eventId || null;
   const { publicKey, connected, connect } = useSolana();
   const { toast } = useToast();
 

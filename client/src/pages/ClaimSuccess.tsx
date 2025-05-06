@@ -10,7 +10,8 @@ import { ExternalLink, Check } from 'lucide-react';
 
 const ClaimSuccess: React.FC = () => {
   const [, params] = useRoute('/claim-success/:eventId');
-  const eventId = params?.eventId ? parseInt(params.eventId, 10) : null;
+  // Use the ID directly as a string for MongoDB compatibility
+  const eventId = params?.eventId || null;
 
   const { data: event, isLoading, error } = useQuery({
     queryKey: [`/api/events/${eventId}`],

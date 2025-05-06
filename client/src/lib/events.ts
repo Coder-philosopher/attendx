@@ -76,7 +76,7 @@ export async function getEventsByCreator(creatorAddress: string): Promise<Event[
 
 // Claim a token for an event
 export async function claimToken(
-  eventId: number,
+  eventId: number | string,
   tokenMintAddress: string,
   walletAddress: string,
   transactionSignature: string

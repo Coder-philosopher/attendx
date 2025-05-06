@@ -152,16 +152,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET check if wallet has claimed token for event
   app.get('/api/events/:eventId/claims/:walletAddress', async (req: Request, res: Response) => {
     try {
-      const eventId = parseInt(req.params.eventId);
-      if (isNaN(eventId)) {
-        return res.status(400).json({ message: "Invalid event ID" });
+      const eventId = req.params.eventId;
+      
+      // Handle different storage types (MongoDB uses string IDs, memory storage uses numeric IDs)
+      let parsedEventId: number | string = eventId;
+      if (!process.env.MONGODB_URI) {
+        // For memory storage, convert to number
+        const numericId = parseInt(eventId);
+        if (isNaN(numericId)) {
+          return res.status(400).json({ message: "Invalid event ID" });
+        }
+        parsedEventId = numericId;
       }
 
       const walletAddress = req.params.walletAddress;
-      const hasClaimed = await storage.hasWalletClaimedToken(eventId, walletAddress);
+      const hasClaimed = await storage.hasWalletClaimedToken(parsedEventId, walletAddress);
       
       res.json({ hasClaimed });
     } catch (error) {
+      console.error("Error checking claim status:", error);
       res.status(500).json({ message: "Failed to check claim status" });
     }
   });
