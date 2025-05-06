@@ -93,8 +93,8 @@ export class MongoDBStorage implements IStorage {
       creator: mongoEvent.creator,
       tokenMintAddress: mongoEvent.tokenMintAddress,
       qrCodeData: mongoEvent.qrCodeData,
-      maxAttendees: mongoEvent.maxAttendees,
-      imageUrl: mongoEvent.imageUrl,
+      maxAttendees: mongoEvent.maxAttendees ?? null,
+      imageUrl: mongoEvent.imageUrl ?? null,
       createdAt: new Date(mongoEvent.createdAt)
     };
   }
