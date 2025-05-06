@@ -27,7 +27,11 @@ export const tokenClaims = pgTable("token_claims", {
 
 // Create insert schemas for validation
 export const insertEventSchema = createInsertSchema(events)
-  .omit({ id: true, createdAt: true });
+  .omit({ id: true, createdAt: true })
+  .extend({
+    // Handle date properly for JSON serialization
+    date: z.string().transform((dateString) => new Date(dateString))
+  });
 
 export const insertTokenClaimSchema = createInsertSchema(tokenClaims)
   .omit({ id: true, claimedAt: true });

@@ -9,12 +9,17 @@ export async function createEvent(
 ): Promise<Event> {
   try {
     // Step 1: Mint the compressed token on Solana
+    // Ensure we have a Date object for mintCompressedToken
+    const eventDate = eventData.date instanceof Date 
+      ? eventData.date 
+      : new Date(eventData.date);
+    
     const { tokenMintAddress, transactionSignature } = await mintCompressedToken(
       eventData.name,
       eventData.description,
-      new Date(eventData.date),
+      eventDate,
       creatorWallet,
-      eventData.imageUrl
+      eventData.imageUrl || undefined
     );
 
     // Step 2: Generate unique QR code data

@@ -6,7 +6,15 @@ import mongoose from 'mongoose';
 export class MongoDBStorage implements IStorage {
   // Event operations
   async createEvent(insertEvent: InsertEvent): Promise<Event> {
-    const newEvent = new EventModel(insertEvent);
+    // Make sure date is correctly parsed into a Date object
+    const processedEvent = {
+      ...insertEvent,
+      date: insertEvent.date instanceof Date 
+        ? insertEvent.date 
+        : new Date(insertEvent.date)
+    };
+    
+    const newEvent = new EventModel(processedEvent);
     const savedEvent = await newEvent.save();
     
     return this.mongoEventToEvent(savedEvent);
