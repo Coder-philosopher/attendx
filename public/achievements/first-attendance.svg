@@ -4,19 +4,30 @@
   <circle cx="64" cy="64" r="50" fill="#1C1C1C" />
   
   <!-- Ticket -->
-  <path d="M30,50 L98,50 L98,78 L30,78 Z" fill="#FFFFFF" />
-  <path d="M30,50 L98,50 L98,58 L30,58 Z" fill="#9945FF" />
+  <path d="M38,48 L90,48 C92,48 94,50 94,52 L94,76 C94,78 92,80 90,80 L38,80 C36,80 34,78 34,76 L34,52 C34,50 36,48 38,48 Z" 
+        fill="#14F195" />
   
-  <!-- Number 1 -->
-  <path d="M61,58 L67,58 L67,78 L61,78 Z" fill="#14F195" />
-  <path d="M61,58 L55,64 L61,64 Z" fill="#14F195" />
+  <!-- Ticket details -->
+  <rect x="38" y="52" width="52" height="4" fill="#1C1C1C" />
+  <rect x="38" y="60" width="52" height="2" fill="#1C1C1C" />
+  <rect x="38" y="66" width="52" height="2" fill="#1C1C1C" />
+  <rect x="38" y="72" width="52" height="2" fill="#1C1C1C" />
   
-  <!-- Checkmark -->
-  <path d="M78,64 L84,70 L94,60" stroke="#14F195" stroke-width="4" fill="none" />
+  <!-- Perforation line -->
+  <line x1="84" y1="48" x2="84" y2="80" stroke="#1C1C1C" stroke-width="2" stroke-dasharray="3,2" />
   
-  <!-- Perforation -->
-  <line x1="40" y1="58" x2="40" y2="78" stroke="#DDDDDD" stroke-width="1" stroke-dasharray="2,2" />
-  <line x1="50" y1="58" x2="50" y2="78" stroke="#DDDDDD" stroke-width="1" stroke-dasharray="2,2" />
-  <line x1="78" y1="58" x2="78" y2="78" stroke="#DDDDDD" stroke-width="1" stroke-dasharray="2,2" />
-  <line x1="88" y1="58" x2="88" y2="78" stroke="#DDDDDD" stroke-width="1" stroke-dasharray="2,2" />
+  <!-- QR code representation -->
+  <rect x="64" y="58" width="16" height="16" rx="2" fill="#1C1C1C" />
+  <rect x="66" y="60" width="4" height="4" fill="#FFFFFF" />
+  <rect x="74" y="60" width="4" height="4" fill="#FFFFFF" />
+  <rect x="66" y="68" width="4" height="4" fill="#FFFFFF" />
+  <rect x="74" y="68" width="4" height="4" fill="#FFFFFF" />
+  
+  <!-- Check mark badge -->
+  <circle cx="45" cy="64" r="10" fill="#9945FF" />
+  <path d="M40,64 L44,68 L50,60" stroke="#FFFFFF" stroke-width="2" fill="none" />
+  
+  <!-- Number 1 badge -->
+  <circle cx="90" cy="38" r="12" fill="#FFEE00" />
+  <text x="90" y="43" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#000000">1</text>
 </svg>
