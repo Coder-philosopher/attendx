@@ -82,21 +82,32 @@ export class MongoDBStorage implements IStorage {
 
   // TokenClaim operations
   async createTokenClaim(insertTokenClaim: InsertTokenClaim): Promise<TokenClaim> {
+    // First, ensure we get the actual event to use its proper MongoDB ObjectId
+    console.log('[mongodb-storage] Processing token claim for eventId:', insertTokenClaim.eventId);
+    
+    // Try to find the event with the given ID (whether it's a string partial ID or numeric ID)
+    const event = await this.getEvent(insertTokenClaim.eventId);
+    if (!event) {
+      console.error(`[mongodb-storage] Failed to find event with ID: ${insertTokenClaim.eventId}`);
+      throw new Error(`Event with ID ${insertTokenClaim.eventId} not found`);
+    }
+    
+    console.log('[mongodb-storage] Found event:', event.id, event.name);
+    
     const newTokenClaim = new TokenClaimModel({
       ...insertTokenClaim,
-      // Convert numeric eventId to ObjectId if needed
-      eventId: mongoose.Types.ObjectId.isValid(insertTokenClaim.eventId.toString()) 
-        ? insertTokenClaim.eventId 
-        : new mongoose.Types.ObjectId()
+      // Use the actual event ID we found
+      eventId: event.id 
     });
     
     const savedTokenClaim = await newTokenClaim.save();
+    console.log('[mongodb-storage] Token claim saved with ID:', savedTokenClaim._id.toString());
     
     // Process achievements for token claim
     try {
       await achievementService.processTokenClaim(
         insertTokenClaim.walletAddress, 
-        insertTokenClaim.eventId.toString()
+        event.id.toString()
       );
     } catch (error) {
       console.warn('[mongodb-storage] Failed to process achievements for token claim:', error);

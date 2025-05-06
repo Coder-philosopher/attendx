@@ -40,20 +40,33 @@ const ClaimToken: React.FC = () => {
         throw new Error("Please connect your wallet first");
       }
 
-      // Step 1: Perform on-chain token claim
-      const { transactionSignature } = await claimCompressedToken(
-        eventId!,
-        event.tokenMintAddress,
-        publicKey.toString()
-      );
+      try {
+        console.log(`Initiating token claim for event ID: ${eventId} with wallet: ${publicKey.toString()}`);
+        
+        // Step 1: Perform on-chain token claim
+        const { transactionSignature } = await claimCompressedToken(
+          eventId!,
+          event.tokenMintAddress,
+          publicKey.toString()
+        );
+        
+        console.log(`On-chain token claim successful, signature: ${transactionSignature}`);
 
-      // Step 2: Record the claim in our backend
-      return await claimToken(
-        eventId!,
-        event.tokenMintAddress,
-        publicKey.toString(),
-        transactionSignature
-      );
+        // Step 2: Record the claim in our backend
+        const result = await claimToken(
+          eventId!,
+          event.tokenMintAddress,
+          publicKey.toString(),
+          transactionSignature
+        );
+        
+        console.log(`Backend token claim recorded successfully:`, result);
+        return result;
+      } catch (error) {
+        console.error('Token claim failed with error:', error);
+        // Re-throw the error for the mutation to handle
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -64,9 +77,26 @@ const ClaimToken: React.FC = () => {
       navigate(`/claim-success/${eventId}`);
     },
     onError: (error) => {
+      let errorMessage = "An unexpected error occurred.";
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
+      // Specific error handling for common issues
+      if (typeof errorMessage === 'string') {
+        if (errorMessage.includes("Event not found")) {
+          errorMessage = "This event doesn't exist or has been deleted.";
+        } else if (errorMessage.includes("already claimed")) {
+          errorMessage = "You've already claimed a token for this event.";
+        } else if (errorMessage.includes("transaction")) {
+          errorMessage = "Blockchain transaction failed. Please try again.";
+        }
+      }
+      
       toast({
         title: "Failed to claim token",
-        description: error instanceof Error ? error.message : "An unexpected error occurred.",
+        description: errorMessage,
         variant: "destructive",
       });
     },

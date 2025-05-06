@@ -82,12 +82,14 @@ export async function claimToken(
   transactionSignature: string
 ): Promise<TokenClaim> {
   try {
+    // Ensure eventId is properly formatted as a string for MongoDB
     const claimData = {
-      eventId,
+      eventId: eventId.toString(),
       walletAddress,
       transactionSignature
     };
 
+    console.log('Claiming token with data:', claimData);
     const response = await apiRequest('POST', '/api/claims', claimData);
     return await response.json();
   } catch (error) {
