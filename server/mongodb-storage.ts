@@ -20,7 +20,6 @@ export class MongoDBStorage implements IStorage {
     
     // Process achievements for event creation
     try {
-      const { achievementService } = require('./achievement-service');
       await achievementService.processEventCreation(insertEvent.creator);
     } catch (error) {
       console.warn('[mongodb-storage] Failed to process achievements for event creation:', error);
@@ -95,7 +94,6 @@ export class MongoDBStorage implements IStorage {
     
     // Process achievements for token claim
     try {
-      const { achievementService } = require('./achievement-service');
       await achievementService.processTokenClaim(
         insertTokenClaim.walletAddress, 
         insertTokenClaim.eventId.toString()
