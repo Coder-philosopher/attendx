@@ -124,3 +124,45 @@ export function generateClaimUrl(eventId: number | string): string {
   const baseUrl = window.location.origin;
   return createSolanaPayUrl(eventId, baseUrl);
 }
+
+// Achievement API functions
+export async function getUserAchievements(walletAddress: string): Promise<any> {
+  try {
+    const response = await apiRequest('GET', `/api/users/${walletAddress}/achievements`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching achievements for user ${walletAddress}:`, error);
+    throw error;
+  }
+}
+
+export async function getUserStats(walletAddress: string): Promise<any> {
+  try {
+    const response = await apiRequest('GET', `/api/users/${walletAddress}/stats`);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching stats for user ${walletAddress}:`, error);
+    throw error;
+  }
+}
+
+export async function getAllAchievements(): Promise<any> {
+  try {
+    const response = await apiRequest('GET', '/api/achievements');
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching all achievements:", error);
+    throw error;
+  }
+}
+
+// Manually trigger achievement check (for testing/development)
+export async function checkAchievements(walletAddress: string, type: 'creator' | 'participant'): Promise<any> {
+  try {
+    const response = await apiRequest('POST', `/api/users/${walletAddress}/achievements/check`, { type });
+    return await response.json();
+  } catch (error) {
+    console.error(`Error checking achievements for user ${walletAddress}:`, error);
+    throw error;
+  }
+}

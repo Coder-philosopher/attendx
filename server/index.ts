@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { connectToMongoDB } from "./mongodb";
 import { testMongoDB } from "./mongodb-test";
+import { registerAchievementRoutes } from "./achievement-routes";
 
 const app = express();
 app.use(express.json());
@@ -56,6 +57,9 @@ app.use((req, res, next) => {
   }
 
   const server = await registerRoutes(app);
+  
+  // Register achievement routes
+  await registerAchievementRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

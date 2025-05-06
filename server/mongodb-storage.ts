@@ -17,6 +17,15 @@ export class MongoDBStorage implements IStorage {
     const newEvent = new EventModel(processedEvent);
     const savedEvent = await newEvent.save();
     
+    // Process achievements for event creation
+    try {
+      const { achievementService } = require('./achievement-service');
+      await achievementService.processEventCreation(insertEvent.creator);
+    } catch (error) {
+      console.warn('[mongodb-storage] Failed to process achievements for event creation:', error);
+      // Don't fail the event creation if achievement processing fails
+    }
+    
     return this.mongoEventToEvent(savedEvent);
   }
 
@@ -82,6 +91,19 @@ export class MongoDBStorage implements IStorage {
     });
     
     const savedTokenClaim = await newTokenClaim.save();
+    
+    // Process achievements for token claim
+    try {
+      const { achievementService } = require('./achievement-service');
+      await achievementService.processTokenClaim(
+        insertTokenClaim.walletAddress, 
+        insertTokenClaim.eventId.toString()
+      );
+    } catch (error) {
+      console.warn('[mongodb-storage] Failed to process achievements for token claim:', error);
+      // Don't fail the token claim if achievement processing fails
+    }
+    
     return this.mongoTokenClaimToTokenClaim(savedTokenClaim);
   }
 
