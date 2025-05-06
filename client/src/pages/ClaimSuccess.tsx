@@ -107,16 +107,19 @@ const ClaimSuccess: React.FC = () => {
                 <div className="py-4 flex justify-between">
                   <dt className="text-sm font-medium text-gray-500">Transaction</dt>
                   <dd className="text-sm text-gray-900">
-                    <a 
-                      href={`https://explorer.solana.com/tx/${event.tokenMintAddress}?cluster=devnet`} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-[#9945FF] hover:text-[#9945FF]/80 flex items-center"
-                    >
-                      View on Explorer
-                      <ExternalLink className="h-4 w-4 ml-1" />
-                    </a>
+                    <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded">
+                      Demo Mode
+                    </span>
                   </dd>
+                </div>
+                
+                <div className="py-4">
+                  <div className="bg-blue-50 p-3 rounded-md">
+                    <p className="text-xs text-blue-700">
+                      <span className="font-medium">Note:</span> In this demo, we're using simulated transactions that won't appear on the Solana Explorer. 
+                      In a production environment, this would link to a real transaction on the blockchain.
+                    </p>
+                  </div>
                 </div>
               </dl>
             </div>

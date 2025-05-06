@@ -65,15 +65,33 @@ export async function claimCompressedToken(
 ): Promise<{ transactionSignature: string }> {
   console.log('Claiming token for event ID:', eventId);
   
-  // This is where we would call Solana Pay or Web3 methods
-  // For now, return placeholder data
-  const transactionSignature = `${Math.random().toString(36).substring(2, 12)}...${Math.random().toString(36).substring(2, 12)}`;
+  // In a real implementation, we would:
+  // 1. Create a Solana transaction to claim the compressed NFT
+  // 2. Sign the transaction with the attendee's wallet
+  // 3. Send the transaction to the blockchain
+  // 4. Return the actual transaction signature
+  
+  // For development/demo purposes, we're generating a signature-like string
+  // that follows Solana's base58 encoded format (but isn't a valid signature)
+  
+  // In production, this would be a real transaction signature from the blockchain
+  // like: "5UJUiWBcEXrk32ZP1iLFFDNMN2e2Ah3BsMtQYn7xJQJkxYfpYjRPMY3TZH6xr2JFLNqvzYQMRZxuCGkRZ7ocMqpY"
+  
+  const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  let mockSignature = '';
+  for (let i = 0; i < 88; i++) {
+    mockSignature += base58Chars.charAt(Math.floor(Math.random() * base58Chars.length));
+  }
+  
+  // Add a note in the console for clarity
+  console.log('DEMO MODE: Generated mock transaction signature (not valid on Solana blockchain)');
+  console.log('In production, this would be replaced with a real Solana transaction');
   
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1500));
   
   return { 
-    transactionSignature 
+    transactionSignature: mockSignature
   };
 }
 

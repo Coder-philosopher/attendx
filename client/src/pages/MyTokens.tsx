@@ -70,6 +70,25 @@ const MyTokens: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+      
+      <Card className="mb-6 border-blue-100">
+        <CardContent className="p-4 bg-blue-50">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <InfoIcon className="h-5 w-5 text-blue-600" />
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-blue-800">Demo Information</h3>
+              <div className="mt-2 text-sm text-blue-700">
+                <p>
+                  This application now supports multiple Solana wallets including Phantom, Backpack, and MetaMask.
+                  In the demo mode, transactions are simulated and won't be visible on explorers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {isLoading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
