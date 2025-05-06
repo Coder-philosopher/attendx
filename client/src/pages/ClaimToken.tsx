@@ -20,18 +20,20 @@ const ClaimToken: React.FC = () => {
   const { publicKey, connected, connect } = useSolana();
   const { toast } = useToast();
 
-  // Get event details
+  // Get event details with proper Event type
   const { data: event, isLoading: isLoadingEvent, error: eventError } = useQuery<Event>({
     queryKey: [`/api/events/${eventId}`],
     enabled: !!eventId,
     refetchOnWindowFocus: false,
+    staleTime: 30000, // Cache for 30 seconds
   });
 
-  // Check if wallet has already claimed
+  // Check if wallet has already claimed with proper type
   const { data: claimStatus, isLoading: isCheckingClaim } = useQuery<{ hasClaimed: boolean }>({
     queryKey: [`/api/events/${eventId}/claims/${publicKey?.toString()}`],
     enabled: !!eventId && !!publicKey,
     refetchOnWindowFocus: false,
+    staleTime: 5000, // Cache for 5 seconds
   });
 
   // Handle token claim
