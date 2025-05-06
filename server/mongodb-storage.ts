@@ -2,6 +2,7 @@ import { IStorage } from './storage';
 import { Event, InsertEvent, TokenClaim, InsertTokenClaim } from '@shared/schema';
 import { EventModel, TokenClaimModel } from './mongodb';
 import mongoose from 'mongoose';
+import { achievementService } from './achievement-service';
 
 export class MongoDBStorage implements IStorage {
   // Event operations

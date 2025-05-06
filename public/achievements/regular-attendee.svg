@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="64" cy="64" r="60" fill="#14F195" />
+  <circle cx="64" cy="64" r="50" fill="#1C1C1C" />
+  
+  <!-- Multiple tickets stacked -->
+  <rect x="34" y="60" width="60" height="20" rx="2" ry="2" fill="#FFFFFF" />
+  <rect x="36" y="55" width="60" height="20" rx="2" ry="2" fill="#CCCCCC" />
+  <rect x="38" y="50" width="60" height="20" rx="2" ry="2" fill="#FFFFFF" />
+  <rect x="40" y="45" width="60" height="20" rx="2" ry="2" fill="#CCCCCC" />
+  <rect x="42" y="40" width="60" height="20" rx="2" ry="2" fill="#FFFFFF" />
+  
+  <!-- Top ticket details -->
+  <rect x="42" y="40" width="15" height="20" fill="#9945FF" />
+  <text x="50" y="55" font-family="Arial" font-size="14" fill="white" text-anchor="middle">5</text>
+  
+  <!-- Checkmarks -->
+  <path d="M70,45 L75,50 L85,40" stroke="#14F195" stroke-width="2" fill="none" />
+  <path d="M70,55 L75,60 L85,50" stroke="#14F195" stroke-width="2" fill="none" />
+  <path d="M70,65 L75,70 L85,60" stroke="#14F195" stroke-width="2" fill="none" />
+  <path d="M70,75 L75,80 L85,70" stroke="#14F195" stroke-width="2" fill="none" />
+</svg>
