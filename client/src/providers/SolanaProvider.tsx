@@ -63,7 +63,15 @@ export const SolanaProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Connect to wallet
   const connect = useCallback(async () => {
     if (!adapter) {
-      throw new Error("Wallet adapter not initialized or Phantom wallet not found");
+      console.warn("Wallet adapter not initialized - checking if Phantom is installed...");
+      
+      // Check if we're in a browser environment
+      if (typeof window !== 'undefined' && typeof window.open === 'function') {
+        // Phantom is not installed, throw a more descriptive error
+        throw new Error("Phantom wallet not found. Please install the Phantom browser extension.");
+      } else {
+        throw new Error("Wallet adapter not initialized in this environment");
+      }
     }
 
     try {

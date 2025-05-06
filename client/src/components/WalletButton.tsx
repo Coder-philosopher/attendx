@@ -18,11 +18,34 @@ const WalletButton: React.FC = () => {
         variant: "default",
       });
     } catch (error) {
-      toast({
-        title: "Connection failed",
-        description: error instanceof Error ? error.message : "Failed to connect wallet",
-        variant: "destructive",
-      });
+      // Check if the error is about Phantom not being installed
+      const errorMessage = error instanceof Error ? error.message : "Failed to connect wallet";
+      
+      if (errorMessage.includes("Phantom wallet not found")) {
+        toast({
+          title: "Phantom wallet not found",
+          description: (
+            <div>
+              <p className="mb-2">Please install the Phantom wallet extension to connect.</p>
+              <a 
+                href="https://phantom.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="underline text-white hover:text-gray-200"
+              >
+                Get Phantom Wallet
+              </a>
+            </div>
+          ),
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Connection failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
       console.error(error);
     } finally {
       setIsConnecting(false);

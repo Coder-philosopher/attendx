@@ -1,8 +1,10 @@
 import { PublicKey, Transaction, Connection, clusterApiUrl } from '@solana/web3.js';
 
 // Set environment variables with browser-compatible approach using Vite's import.meta.env
-const HELIUS_API_KEY = import.meta.env.VITE_HELIUS_API_KEY || "default_key";
+const HELIUS_API_KEY = import.meta.env.VITE_HELIUS_API_KEY || "95f22d24-245b-40e8-82f4-bb6427495608";
 const LIGHT_PROTOCOL_API_KEY = import.meta.env.VITE_LIGHT_PROTOCOL_API_KEY || "default_key";
+
+console.log("Helius API Key available:", !!HELIUS_API_KEY);
 
 // We'll use Solana Devnet for development and testing
 export const SOLANA_NETWORK = 'devnet';
@@ -20,8 +22,28 @@ export async function mintCompressedToken(
   imageUrl?: string
 ): Promise<{ tokenMintAddress: string, transactionSignature: string }> {
   console.log('Minting compressed token for event:', eventName);
+  console.log('Using Helius API with key:', HELIUS_API_KEY.substring(0, 5) + '...');
   
-  // This is where we would call Light Protocol or Helius SDK
+  // Prepare metadata for the compressed NFT
+  const metadata = {
+    name: eventName,
+    description: eventDescription,
+    image: imageUrl || 'https://solana.com/src/img/branding/solanaLogoMark.svg',
+    attributes: [
+      {
+        trait_type: 'Event Date',
+        value: eventDate.toISOString().split('T')[0]
+      },
+      {
+        trait_type: 'Creator',
+        value: creatorWallet.substring(0, 8) + '...'
+      }
+    ]
+  };
+  
+  console.log('Token metadata prepared:', metadata);
+  
+  // In a future implementation, we would use Helius API to create a compressed NFT
   // For now, return placeholder data
   const tokenMintAddress = `sol${Math.random().toString(36).substring(2, 7)}...${Math.random().toString(36).substring(2, 5)}`;
   const transactionSignature = `${Math.random().toString(36).substring(2, 12)}...${Math.random().toString(36).substring(2, 12)}`;
