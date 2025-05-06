@@ -5,9 +5,10 @@ import { getEvents } from '../lib/events';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { format } from 'date-fns';
+import { Event } from '@shared/schema';
 
 const Home: React.FC = () => {
-  const { data: events, isLoading, error } = useQuery({
+  const { data: events, isLoading, error } = useQuery<Event[]>({
     queryKey: ['/api/events'],
     refetchOnWindowFocus: false,
   });
@@ -36,10 +37,11 @@ const Home: React.FC = () => {
                 </Link>
               </div>
               <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                <Link href="/my-tokens">
-                  <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#9945FF] bg-opacity-60 hover:bg-opacity-70 md:py-4 md:text-lg md:px-10">
-                    View My Tokens
-                  </a>
+                <Link 
+                  href="/my-tokens"
+                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#9945FF] bg-opacity-60 hover:bg-opacity-70 md:py-4 md:text-lg md:px-10"
+                >
+                  View My Tokens
                 </Link>
               </div>
             </div>
@@ -140,7 +142,7 @@ const Home: React.FC = () => {
                 <p className="text-red-500">Failed to load events. Please try again later.</p>
               </div>
             ) : events && events.length > 0 ? (
-              events.slice(0, 3).map((event: any) => (
+              events?.slice(0, 3).map((event: Event) => (
                 <Card key={event.id} className="overflow-hidden">
                   <img 
                     src={event.imageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=400&q=80"} 
@@ -159,8 +161,11 @@ const Home: React.FC = () => {
                     <h3 className="mt-2 text-xl font-semibold text-gray-900">{event.name}</h3>
                     <p className="mt-2 text-gray-500 text-sm">{event.description}</p>
                     <div className="mt-4">
-                      <Link href={`/claim/${event.id}`}>
-                        <a className="text-[#9945FF] hover:text-[#9945FF]/80 font-medium text-sm">View Details →</a>
+                      <Link 
+                        href={`/claim/${event.id}`}
+                        className="text-[#9945FF] hover:text-[#9945FF]/80 font-medium text-sm"
+                      >
+                        View Details →
                       </Link>
                     </div>
                   </CardContent>
@@ -174,10 +179,11 @@ const Home: React.FC = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <Link href="/create-event">
-              <a className="inline-flex items-center px-4 py-2 border border-[#9945FF] text-sm font-medium rounded-md text-[#9945FF] bg-white hover:bg-gray-50">
-                View All Events
-              </a>
+            <Link 
+              href="/create-event" 
+              className="inline-flex items-center px-4 py-2 border border-[#9945FF] text-sm font-medium rounded-md text-[#9945FF] bg-white hover:bg-gray-50"
+            >
+              View All Events
             </Link>
           </div>
         </div>
