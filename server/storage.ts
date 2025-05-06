@@ -4,17 +4,17 @@ import { events, type Event, type InsertEvent, tokenClaims, type TokenClaim, typ
 export interface IStorage {
   // Event operations
   createEvent(event: InsertEvent): Promise<Event>;
-  getEvent(id: number): Promise<Event | undefined>;
+  getEvent(id: number | string): Promise<Event | undefined>;
   getEventByMintAddress(tokenMintAddress: string): Promise<Event | undefined>;
   getEvents(): Promise<Event[]>;
   getEventsByCreator(creatorAddress: string): Promise<Event[]>;
   
   // TokenClaim operations
   createTokenClaim(claim: InsertTokenClaim): Promise<TokenClaim>;
-  getTokenClaim(id: number): Promise<TokenClaim | undefined>;
-  getTokenClaimsByEvent(eventId: number): Promise<TokenClaim[]>;
+  getTokenClaim(id: number | string): Promise<TokenClaim | undefined>;
+  getTokenClaimsByEvent(eventId: number | string): Promise<TokenClaim[]>;
   getTokenClaimsByWallet(walletAddress: string): Promise<TokenClaim[]>;
-  hasWalletClaimedToken(eventId: number, walletAddress: string): Promise<boolean>;
+  hasWalletClaimedToken(eventId: number | string, walletAddress: string): Promise<boolean>;
 }
 
 // In-memory implementation of the storage interface
@@ -49,7 +49,15 @@ export class MemStorage implements IStorage {
     return event;
   }
 
-  async getEvent(id: number): Promise<Event | undefined> {
+  async getEvent(id: number | string): Promise<Event | undefined> {
+    // Handle case when id is a string by converting to number
+    if (typeof id === 'string') {
+      const numId = parseInt(id);
+      if (!isNaN(numId)) {
+        return this.events.get(numId);
+      }
+      return undefined;
+    }
     return this.events.get(id);
   }
 
@@ -80,13 +88,28 @@ export class MemStorage implements IStorage {
     return tokenClaim;
   }
 
-  async getTokenClaim(id: number): Promise<TokenClaim | undefined> {
+  async getTokenClaim(id: number | string): Promise<TokenClaim | undefined> {
+    // Handle case when id is a string by converting to number
+    if (typeof id === 'string') {
+      const numId = parseInt(id);
+      if (!isNaN(numId)) {
+        return this.tokenClaims.get(numId);
+      }
+      return undefined;
+    }
     return this.tokenClaims.get(id);
   }
 
-  async getTokenClaimsByEvent(eventId: number): Promise<TokenClaim[]> {
+  async getTokenClaimsByEvent(eventId: number | string): Promise<TokenClaim[]> {
+    // Convert string eventId to number if needed
+    const compareEventId = typeof eventId === 'string' ? parseInt(eventId) : eventId;
+    
     return Array.from(this.tokenClaims.values())
-      .filter((claim) => claim.eventId === eventId)
+      .filter((claim) => {
+        // Handle both string and number eventIds in claims
+        const claimEventId = typeof claim.eventId === 'string' ? parseInt(claim.eventId) : claim.eventId;
+        return !isNaN(Number(claimEventId)) && claimEventId === compareEventId;
+      })
       .sort((a, b) => new Date(b.claimedAt).getTime() - new Date(a.claimedAt).getTime());
   }
 
@@ -96,9 +119,16 @@ export class MemStorage implements IStorage {
       .sort((a, b) => new Date(b.claimedAt).getTime() - new Date(a.claimedAt).getTime());
   }
 
-  async hasWalletClaimedToken(eventId: number, walletAddress: string): Promise<boolean> {
+  async hasWalletClaimedToken(eventId: number | string, walletAddress: string): Promise<boolean> {
+    // Convert string eventId to number if needed
+    const compareEventId = typeof eventId === 'string' ? parseInt(eventId) : eventId;
+    
     return Array.from(this.tokenClaims.values()).some(
-      (claim) => claim.eventId === eventId && claim.walletAddress === walletAddress
+      (claim) => {
+        // Handle both string and number eventIds in claims
+        const claimEventId = typeof claim.eventId === 'string' ? parseInt(claim.eventId) : claim.eventId;
+        return !isNaN(Number(claimEventId)) && claimEventId === compareEventId && claim.walletAddress === walletAddress;
+      }
     );
   }
 }

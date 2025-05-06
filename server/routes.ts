@@ -32,18 +32,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // GET event by ID
   app.get('/api/events/:id', async (req: Request, res: Response) => {
     try {
-      const id = parseInt(req.params.id);
-      if (isNaN(id)) {
-        return res.status(400).json({ message: "Invalid event ID" });
+      const id = req.params.id;
+      
+      // Try to handle both numeric IDs (for memory storage) and string IDs (for MongoDB)
+      let eventId: number | string = id;
+      
+      // If MongoDB is being used, use the ID as is (it's a string)
+      // Otherwise, try to parse it as a number for memory storage
+      if (!process.env.MONGODB_URI) {
+        const numericId = parseInt(id);
+        if (isNaN(numericId)) {
+          return res.status(400).json({ message: "Invalid event ID" });
+        }
+        eventId = numericId;
       }
 
-      const event = await storage.getEvent(id);
+      const event = await storage.getEvent(eventId);
       if (!event) {
         return res.status(404).json({ message: "Event not found" });
       }
 
       res.json(event);
     } catch (error) {
+      console.error("Error fetching event:", error);
       res.status(500).json({ message: "Failed to fetch event" });
     }
   });

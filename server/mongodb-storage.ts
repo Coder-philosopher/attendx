@@ -20,14 +20,18 @@ export class MongoDBStorage implements IStorage {
     return this.mongoEventToEvent(savedEvent);
   }
 
-  async getEvent(id: number): Promise<Event | undefined> {
+  async getEvent(id: number | string): Promise<Event | undefined> {
     try {
+      // Handle case when id is a number (from memory storage)
+      // MongoDB ObjectIds are strings, but we need to be compatible with both
       const event = await EventModel.findById(id);
       return event ? this.mongoEventToEvent(event) : undefined;
     } catch (error) {
       if (error instanceof mongoose.Error.CastError) {
+        console.log(`Cast error finding event with id ${id}`, error);
         return undefined;
       }
+      console.error(`Error finding event with id ${id}:`, error);
       throw error;
     }
   }

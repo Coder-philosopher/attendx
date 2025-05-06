@@ -53,7 +53,7 @@ export async function getEvents(): Promise<Event[]> {
 }
 
 // Get a specific event by ID
-export async function getEvent(eventId: number): Promise<Event> {
+export async function getEvent(eventId: number | string): Promise<Event> {
   try {
     const response = await apiRequest('GET', `/api/events/${eventId}`);
     return await response.json();
@@ -108,7 +108,7 @@ export async function getTokensByWallet(walletAddress: string): Promise<(TokenCl
 }
 
 // Check if a wallet has already claimed a token for an event
-export async function hasWalletClaimedToken(eventId: number, walletAddress: string): Promise<boolean> {
+export async function hasWalletClaimedToken(eventId: number | string, walletAddress: string): Promise<boolean> {
   try {
     const response = await apiRequest('GET', `/api/events/${eventId}/claims/${walletAddress}`);
     const data = await response.json();
@@ -120,7 +120,7 @@ export async function hasWalletClaimedToken(eventId: number, walletAddress: stri
 }
 
 // Generate claim URL for an event
-export function generateClaimUrl(eventId: number): string {
+export function generateClaimUrl(eventId: number | string): string {
   const baseUrl = window.location.origin;
   return createSolanaPayUrl(eventId, baseUrl);
 }

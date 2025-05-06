@@ -91,7 +91,7 @@ export async function getOwnedTokens(walletAddress: string): Promise<any[]> {
 }
 
 // Function to create a Solana Pay URL for token claiming
-export function createSolanaPayUrl(eventId: number, baseUrl: string): string {
+export function createSolanaPayUrl(eventId: number | string, baseUrl: string): string {
   const url = new URL(`${baseUrl}/claim/${eventId}`);
   return url.toString();
 }
