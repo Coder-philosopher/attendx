@@ -22,7 +22,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Rocket, Sparkle, Calendar, Image as ImageIcon, Users } from 'lucide-react';
 
 // Form validation schema
 const formSchema = z.object({
@@ -64,7 +64,6 @@ const CreateEvent: React.FC = () => {
       if (!connected || !publicKey) {
         throw new Error("Please connect your wallet first.");
       }
-
       const eventData: Omit<InsertEvent, "tokenMintAddress" | "qrCodeData" | "creator"> = {
         name: values.name,
         description: values.description,
@@ -72,7 +71,6 @@ const CreateEvent: React.FC = () => {
         imageUrl: values.imageUrl || undefined,
         maxAttendees: values.maxAttendees || undefined,
       };
-
       return await createEvent(eventData, publicKey.toString());
     },
     onSuccess: (data) => {
@@ -98,61 +96,63 @@ const CreateEvent: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Create an Event</h1>
-        <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+        <span className="inline-flex items-center justify-center mb-4 p-3 rounded-full bg-primary/90 shadow-lg animate-fade-in">
+          <Rocket className="h-8 w-8 text-white animate-bounce" />
+        </span>
+        <h1 className="text-4xl font-extrabold tracking-tight text-foreground animate-gradient-x bg-gradient-to-r from-primary via-[#14F195] to-primary bg-clip-text text-transparent">Create an Event</h1>
+        <p className="mt-3 max-w-2xl mx-auto text-xl text-muted-foreground sm:mt-4">
           Fill out the form below to create an event and mint a compressed token (cToken) for attendees.
         </p>
       </div>
-
       <div className="max-w-3xl mx-auto">
-        <Card>
+        <Card className="glass-card">
           <CardContent className="p-6">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Event Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="e.g. Solana Hackathon 2023"
-                          {...field}
-                          disabled={createEventMutation.isPending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Event Date</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...field}
-                          disabled={createEventMutation.isPending}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2"><Sparkle className="h-4 w-4 text-primary" /> Event Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="e.g. Solana Hackathon 2023"
+                            {...field}
+                            disabled={createEventMutation.isPending}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> Event Date</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="date"
+                            {...field}
+                            disabled={createEventMutation.isPending}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel className="flex items-center gap-2"><Sparkle className="h-4 w-4 text-primary" /> Description</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Describe your event..."
@@ -168,93 +168,71 @@ const CreateEvent: React.FC = () => {
                     </FormItem>
                   )}
                 />
-
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Image URL (Optional)</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="https://example.com/image.jpg"
-                          {...field}
-                          disabled={createEventMutation.isPending}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Enter a URL for the event image. This will be displayed with the token.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="maxAttendees"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Maximum Attendees (Optional)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="Leave blank for unlimited"
-                          {...field}
-                          disabled={createEventMutation.isPending}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Limit the number of cTokens that can be claimed.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Alert variant="warning" className="bg-yellow-50">
-                  <AlertCircle className="h-5 w-5 text-yellow-400" />
-                  <AlertTitle className="text-yellow-800">Important Note</AlertTitle>
-                  <AlertDescription className="text-yellow-700">
-                    Creating an event will mint a compressed token (cToken) on Solana Devnet using ZK Compression. 
-                    Make sure your wallet is connected and has enough SOL for the transaction.
-                  </AlertDescription>
-                </Alert>
-
-                {!connected && (
-                  <Alert variant="destructive">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <FormField
+                    control={form.control}
+                    name="imageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /> Image URL (Optional)</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="https://example.com/image.jpg"
+                            {...field}
+                            disabled={createEventMutation.isPending}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter a URL for the event image. This will be displayed with the token.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="maxAttendees"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2"><Users className="h-4 w-4 text-primary" /> Maximum Attendees (Optional)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Leave blank for unlimited"
+                            {...field}
+                            disabled={createEventMutation.isPending}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Limit the number of cTokens that can be claimed.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                {(!connected || createEventMutation.isError) && (
+                  <Alert variant="destructive" className="glass-card">
                     <AlertCircle className="h-5 w-5" />
-                    <AlertTitle>Wallet not connected</AlertTitle>
+                    <AlertTitle>{!connected ? 'Wallet not connected' : 'Failed to create event'}</AlertTitle>
                     <AlertDescription>
-                      Please connect your wallet first to create an event.
+                      {!connected
+                        ? 'Please connect your Solana wallet to create an event.'
+                        : createEventMutation.error instanceof Error
+                        ? createEventMutation.error.message
+                        : 'An unexpected error occurred.'}
                     </AlertDescription>
                   </Alert>
                 )}
-
-                <div className="flex justify-end space-x-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate('/')}
-                    disabled={createEventMutation.isPending}
-                  >
-                    Cancel
-                  </Button>
+                <div className="flex justify-end">
                   <Button
                     type="submit"
+                    size="lg"
+                    className="gap-2 rounded-full shadow-lg text-lg"
                     disabled={createEventMutation.isPending || !connected}
                   >
-                    {createEventMutation.isPending ? (
-                      <>
-                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Creating Event...
-                      </>
-                    ) : (
-                      'Create Event & Mint Token'
-                    )}
+                    <Rocket className="h-5 w-5" />
+                    {createEventMutation.isPending ? 'Creating Event...' : 'Create Event & Mint Token'}
                   </Button>
                 </div>
               </form>

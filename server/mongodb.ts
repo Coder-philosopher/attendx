@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { log } from './vite';
-
+import 'dotenv/config';
 // MongoDB URI from environment variable
 const MONGODB_URI = process.env.MONGODB_URI;
 

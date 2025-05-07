@@ -4,8 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 import { getEvents } from '../lib/events';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { Event } from '@shared/schema';
+import { Sparkle, QrCode, BadgeCheck, Rocket, ArrowRight } from 'lucide-react';
 
 const Home: React.FC = () => {
   const { data: events, isLoading, error } = useQuery<Event[]>({
@@ -16,118 +18,118 @@ const Home: React.FC = () => {
   return (
     <div>
       {/* Hero Section */}
-      <div className="relative">
-        <div className="absolute inset-0 gradient-bg"></div>
-        <div className="relative h-96 flex items-center justify-center">
-          <div className="text-center px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-              <span className="block">Proof of Participation</span>
-              <span className="block text-[#14F195]">on Solana</span>
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-white sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Create and collect compressed tokens that prove your participation in events, efficiently stored on Solana using ZK Compression.
-            </p>
-            <div className="mt-10 max-w-sm mx-auto sm:flex sm:justify-center md:mt-12">
-              <div className="rounded-md shadow">
-                <Link 
-                  href="/create-event"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-[#9945FF] bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
-                >
-                  Create Event
-                </Link>
-              </div>
-              <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                <Link 
-                  href="/my-tokens"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#9945FF] bg-opacity-60 hover:bg-opacity-70 md:py-4 md:text-lg md:px-10"
-                >
-                  View My Tokens
-                </Link>
-              </div>
-            </div>
+      <div className="relative bg-background text-foreground h-[32rem] flex items-center justify-center overflow-hidden">
+        {/* Animated SVG blob background */}
+        <svg className="absolute left-1/2 top-0 -translate-x-1/2 opacity-30 blur-2xl animate-pulse" width="900" height="400" viewBox="0 0 900 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="450" cy="200" rx="350" ry="120" fill="url(#paint0_radial)" />
+          <defs>
+            <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="translate(450 200) scale(350 120)" gradientUnits="userSpaceOnUse">
+              <stop stopColor="#9945FF" />
+              <stop offset="1" stopColor="#14F195" />
+            </radialGradient>
+          </defs>
+        </svg>
+        <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center">
+          <span className="inline-flex items-center justify-center mb-4 p-3 rounded-full bg-primary/90 shadow-lg animate-fade-in">
+            <Sparkle className="h-8 w-8 text-white animate-spin-slow" />
+          </span>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-[#14F195] to-primary bg-clip-text text-transparent animate-gradient-x">
+            Proof of Participation
+            <span className="block text-4xl md:text-6xl font-bold mt-2 text-foreground">on Solana</span>
+          </h1>
+          <p className="mt-5 max-w-2xl mx-auto text-lg md:text-2xl text-muted-foreground animate-fade-in">
+            Create and collect compressed tokens that prove your participation in events, efficiently stored on Solana using ZK Compression.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
+            <Button asChild size="lg" className="gap-2 shadow-xl">
+              <Link href="/create-event">
+                <Rocket className="h-5 w-5" />
+                Create Event
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="secondary" className="gap-2 shadow-xl">
+              <Link href="/my-tokens">
+                <BadgeCheck className="h-5 w-5" />
+                View My Tokens
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="py-12 bg-white">
+      <div className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="lg:text-center">
-            <h2 className="text-base text-[#9945FF] font-semibold tracking-wide uppercase">Features</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+          <div className="lg:text-center mb-12">
+            <h2 className="text-base text-primary font-semibold tracking-wide uppercase animate-fade-in">Features</h2>
+            <p className="mt-2 text-4xl leading-8 font-extrabold tracking-tight text-foreground animate-fade-in">
               A better way to prove participation
             </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+            <p className="mt-4 max-w-2xl text-xl text-muted-foreground lg:mx-auto animate-fade-in">
               Using Solana's ZK Compression, we've created a gas-efficient way to issue and collect proof-of-participation tokens.
             </p>
           </div>
-
-          <div className="mt-10">
-            <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#9945FF] text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
-                  </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Create Events</p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            <Card className="relative glass-card group transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center justify-center h-14 w-14 rounded-full bg-primary shadow-lg group-hover:scale-110 transition-transform">
+                <Rocket className="h-7 w-7 text-white animate-bounce" />
+              </div>
+              <CardContent className="pt-10">
+                <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
+                  Create Events
+                </h3>
+                <p className="text-base text-muted-foreground">
                   Easily create events and mint compressed tokens (cTokens) as unique badges for attendance verification.
-                </dd>
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="relative glass-card group transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center justify-center h-14 w-14 rounded-full bg-green-500 shadow-lg group-hover:scale-110 transition-transform">
+                <QrCode className="h-7 w-7 text-white animate-pulse" />
               </div>
-
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#14F195] text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                    </svg>
-                  </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">QR Verification</p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
+              <CardContent className="pt-10">
+                <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
+                  QR Verification
+                </h3>
+                <p className="text-base text-muted-foreground">
                   Generate unique QR codes for each event allowing attendees to claim tokens via Solana Pay.
-                </dd>
+                </p>
+              </CardContent>
+            </Card>
+            <Card className="relative glass-card group transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex items-center justify-center h-14 w-14 rounded-full bg-blue-500 shadow-lg group-hover:scale-110 transition-transform">
+                <BadgeCheck className="h-7 w-7 text-white animate-spin-slow" />
               </div>
-
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#00C2FF] text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                  </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">Collect Tokens</p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
+              <CardContent className="pt-10">
+                <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
+                  Collect Tokens
+                </h3>
+                <p className="text-base text-muted-foreground">
                   Build a collection of attendance tokens that prove your participation history in various events.
-                </dd>
-              </div>
-            </dl>
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
 
       {/* Recent Events Section */}
-      <div className="py-12 bg-gray-50">
+      <div className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-base text-[#9945FF] font-semibold tracking-wide uppercase">Discover</h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">Recent Events</p>
+          <div className="text-center mb-10">
+            <h2 className="text-base text-primary font-semibold tracking-wide uppercase animate-fade-in">Discover</h2>
+            <p className="mt-2 text-4xl leading-8 font-extrabold tracking-tight text-foreground animate-fade-in">Recent Events</p>
           </div>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {isLoading ? (
-              // Loading skeletons
               Array(3).fill(0).map((_, i) => (
-                <Card key={i} className="overflow-hidden">
+                <Card key={i} className="overflow-hidden glass-card animate-pulse">
                   <Skeleton className="h-48 w-full" />
                   <CardContent className="p-6">
-                    <div className="flex items-baseline">
+                    <div className="flex items-baseline gap-2">
                       <Skeleton className="h-5 w-16 rounded-full" />
-                      <Skeleton className="ml-2 h-4 w-24" />
+                      <Skeleton className="h-4 w-24" />
                     </div>
                     <Skeleton className="mt-2 h-7 w-3/4" />
                     <Skeleton className="mt-2 h-16 w-full" />
@@ -139,52 +141,67 @@ const Home: React.FC = () => {
               ))
             ) : error ? (
               <div className="col-span-full text-center">
-                <p className="text-red-500">Failed to load events. Please try again later.</p>
+                <p className="text-red-500 flex flex-col items-center gap-2">
+                  <Rocket className="mx-auto h-8 w-8 animate-bounce text-destructive" />
+                  Failed to load events. Please try again later.
+                </p>
               </div>
             ) : events && events.length > 0 ? (
               events?.slice(0, 3).map((event: Event) => (
-                <Card key={event.id} className="overflow-hidden">
-                  <img 
-                    src={event.imageUrl || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=400&q=80"} 
-                    alt={`${event.name} Event`} 
-                    className="h-48 w-full object-cover" 
-                  />
+                <Card key={event.id} className="overflow-hidden glass-card group transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                  <div className="relative">
+                    <img 
+                      src={event.imageUrl || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=400&q=80'} 
+                      alt={`${event.name} Event`} 
+                      className="h-48 w-full object-cover rounded-t-lg group-hover:brightness-90 transition-all duration-300" 
+                    />
+                    <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-green-500/90 text-white text-xs font-semibold shadow-lg flex items-center gap-1 animate-fade-in">
+                      <BadgeCheck className="h-4 w-4" /> Active
+                    </span>
+                  </div>
                   <CardContent className="p-6">
-                    <div className="flex items-baseline">
-                      <span className="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                        Active
-                      </span>
-                      <div className="ml-2 text-xs text-gray-500">
+                    <div className="flex items-baseline gap-2">
+                      <span className="inline-block px-2 py-1 text-xs font-semibold rounded-full bg-accent text-accent-foreground">
                         {format(new Date(event.date), 'MMMM d, yyyy')}
-                      </div>
+                      </span>
                     </div>
-                    <h3 className="mt-2 text-xl font-semibold text-gray-900">{event.name}</h3>
-                    <p className="mt-2 text-gray-500 text-sm">{event.description}</p>
-                    <div className="mt-4">
-                      <Link 
-                        href={`/claim/${event.id}`}
-                        className="text-[#9945FF] hover:text-[#9945FF]/80 font-medium text-sm"
-                      >
-                        View Details →
-                      </Link>
+                    <h3 className="mt-2 text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 flex items-center gap-2">
+                      <Sparkle className="h-5 w-5 text-primary animate-spin-slow" />
+                      {event.name}
+                    </h3>
+                    <p className="mt-2 text-muted-foreground text-sm min-h-[48px]">{event.description}</p>
+                    <div className="mt-4 flex justify-end">
+                      <Button asChild size="sm" variant="outline" className="gap-2 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                        <Link href={`/claim/${event.id}`}>
+                          <ArrowRight className="h-4 w-4" />
+                          View Details
+                        </Link>
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
               ))
             ) : (
-              <div className="col-span-full text-center">
-                <p className="text-gray-500">No events available. Be the first to create one!</p>
+              <div className="col-span-full text-center flex flex-col items-center gap-4 py-12 animate-fade-in">
+                <Sparkle className="h-12 w-12 text-primary animate-pulse" />
+                <p className="text-lg text-muted-foreground">No events available. Be the first to create one!</p>
+                <Button asChild size="lg" className="gap-2">
+                  <Link href="/create-event">
+                    <Rocket className="h-5 w-5" />
+                    Create Your First Event
+                  </Link>
+                </Button>
               </div>
             )}
           </div>
 
-          <div className="mt-12 text-center">
-            <Link 
-              href="/create-event" 
-              className="inline-flex items-center px-4 py-2 border border-[#9945FF] text-sm font-medium rounded-md text-[#9945FF] bg-white hover:bg-gray-50"
-            >
-              View All Events
-            </Link>
+          <div className="mt-16 text-center animate-fade-in">
+            <Button asChild size="lg" variant="ghost" className="gap-2 border border-primary text-primary hover:bg-primary/10">
+              <Link href="/create-event">
+                <ArrowRight className="h-5 w-5" />
+                View All Events
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

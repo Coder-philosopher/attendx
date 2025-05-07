@@ -8,11 +8,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
-import { Check, ExternalLink } from 'lucide-react';
+import { CheckCircle, Sparkle, ExternalLink, Copy, Rocket, BadgeCheck } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const EventSuccess: React.FC = () => {
   const [, params] = useRoute('/event-success/:id');
-  // Use the ID directly as a string for MongoDB compatibility
   const eventId = params?.id || null;
   const [copiedToClipboard, setCopiedToClipboard] = useState(false);
   const { toast } = useToast();
@@ -40,25 +40,25 @@ const EventSuccess: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-            <Check className="h-6 w-6 text-green-600" />
-          </div>
-          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Event Created Successfully!</h1>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+          <span className="inline-flex items-center justify-center mb-4 p-3 rounded-full bg-green-500 shadow-lg animate-fade-in">
+            <CheckCircle className="h-8 w-8 text-white animate-bounce" />
+          </span>
+          <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-foreground animate-gradient-x bg-gradient-to-r from-primary via-[#14F195] to-primary bg-clip-text text-transparent">Event Created Successfully!</h1>
+          <p className="mt-3 max-w-2xl mx-auto text-xl text-muted-foreground sm:mt-4">
             Loading event details...
           </p>
         </div>
         <div className="max-w-3xl mx-auto">
-          <Card>
+          <Card className="glass-card animate-pulse">
             <CardContent className="p-6">
               <Skeleton className="h-6 w-64 my-2" />
               <Skeleton className="h-6 w-full my-2" />
               <Skeleton className="h-6 w-1/2 my-2" />
             </CardContent>
           </Card>
-          <Card className="mt-10">
+          <Card className="mt-10 glass-card animate-pulse">
             <CardContent className="p-6 text-center">
               <Skeleton className="h-6 w-64 mx-auto my-2" />
               <Skeleton className="h-64 w-64 mx-auto my-6" />
@@ -72,56 +72,66 @@ const EventSuccess: React.FC = () => {
 
   if (error || !event) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Error Loading Event</h1>
-        <p className="mt-3 text-xl text-red-500">Failed to load event details. Please try again.</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <Alert variant="destructive" className="max-w-2xl mx-auto glass-card">
+          <Sparkle className="h-6 w-6 text-destructive animate-bounce" />
+          <AlertTitle>Error Loading Event</AlertTitle>
+          <AlertDescription>
+            Failed to load event details. Please try again.
+          </AlertDescription>
+        </Alert>
         <div className="mt-6">
-          <Link href="/create-event">
-            <Button>Back to Create Event</Button>
-          </Link>
+          <Button asChild size="lg" className="gap-2">
+            <Link href="/create-event">
+              <Rocket className="h-5 w-5" />
+              Back to Create Event
+            </Link>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-12">
-        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-          <Check className="h-6 w-6 text-green-600" />
-        </div>
-        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">Event Created Successfully!</h1>
-        <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+        <span className="inline-flex items-center justify-center mb-4 p-3 rounded-full bg-green-500 shadow-lg animate-fade-in">
+          <CheckCircle className="h-8 w-8 text-white animate-bounce" />
+        </span>
+        <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-foreground animate-gradient-x bg-gradient-to-r from-primary via-[#14F195] to-primary bg-clip-text text-transparent">Event Created Successfully!</h1>
+        <p className="mt-3 max-w-2xl mx-auto text-xl text-muted-foreground sm:mt-4">
           Your event has been created and a compressed token (cToken) has been minted on Solana.
         </p>
       </div>
-
       <div className="max-w-3xl mx-auto">
-        <Card>
+        <Card className="glass-card">
           <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">Event Details</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Share the QR code with attendees to let them claim the token.</p>
+            <h3 className="text-lg leading-6 font-bold text-foreground flex items-center gap-2">
+              <BadgeCheck className="h-5 w-5 text-primary animate-spin-slow" />
+              Event Details
+            </h3>
+            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">Share the QR code with attendees to let them claim the token.</p>
           </div>
-          <div className="border-t border-gray-200">
+          <div className="border-t border-border">
             <dl>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Event Name</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{event.name}</dd>
+              <div className="bg-background/80 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-muted-foreground">Event Name</dt>
+                <dd className="mt-1 text-sm text-foreground sm:mt-0 sm:col-span-2">{event.name}</dd>
               </div>
-              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Date</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <div className="bg-background px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-muted-foreground">Date</dt>
+                <dd className="mt-1 text-sm text-foreground sm:mt-0 sm:col-span-2">
                   {format(new Date(event.date), 'MMMM d, yyyy')}
                 </dd>
               </div>
-              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Transaction</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  <a 
-                    href={`https://explorer.solana.com/tx/${event.tokenMintAddress}?cluster=devnet`} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-[#9945FF] hover:text-[#9945FF]/80 flex items-center"
+              <div className="bg-background/80 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-muted-foreground">Transaction</dt>
+                <dd className="mt-1 text-sm text-foreground sm:mt-0 sm:col-span-2">
+                  <a
+                    href={`https://explorer.solana.com/tx/${event.tokenMintAddress}?cluster=devnet`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:text-primary/80 flex items-center"
                   >
                     {event.tokenMintAddress.substring(0, 10)}...{event.tokenMintAddress.substring(event.tokenMintAddress.length - 5)}
                     <ExternalLink className="h-4 w-4 ml-1" />
@@ -131,57 +141,61 @@ const EventSuccess: React.FC = () => {
             </dl>
           </div>
         </Card>
-
         <div className="mt-10">
-          <Card>
+          <Card className="glass-card">
             <CardContent className="p-6">
               <div className="text-center">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">QR Code for Attendees</h3>
-                <p className="mt-1 max-w-2xl mx-auto text-sm text-gray-500">
+                <h3 className="text-lg leading-6 font-bold text-foreground flex items-center gap-2">
+                  <Sparkle className="h-5 w-5 text-primary animate-spin-slow" />
+                  QR Code for Attendees
+                </h3>
+                <p className="mt-1 max-w-2xl mx-auto text-sm text-muted-foreground">
                   Attendees can scan this QR code to claim their proof-of-participation token.
                 </p>
-                
                 <div className="mt-6 flex justify-center">
-                  <QRCode 
-                    value={claimUrl} 
-                    size={256} 
+                  <QRCode
+                    value={claimUrl}
+                    size={256}
                   />
                 </div>
-                
                 <div className="mt-6">
-                  <p className="text-sm text-gray-500 mb-2">Or share this claim link:</p>
+                  <p className="text-sm text-muted-foreground mb-2">Or share this claim link:</p>
                   <div className="flex rounded-md shadow-sm">
-                    <input 
-                      type="text" 
-                      readOnly 
-                      value={claimUrl} 
-                      className="flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md focus:ring-[#9945FF] focus:border-[#9945FF] sm:text-sm border-gray-300" 
+                    <input
+                      type="text"
+                      readOnly
+                      value={claimUrl}
+                      className="flex-1 min-w-0 block w-full px-3 py-2 rounded-l-md focus:ring-primary focus:border-primary sm:text-sm border-border bg-background"
                     />
-                    <button 
-                      type="button" 
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
                       onClick={copyToClipboard}
-                      className="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#9945FF]"
+                      className="rounded-l-none"
+                      aria-label="Copy claim link"
                     >
-                      {copiedToClipboard ? 'Copied!' : 'Copy'}
-                    </button>
+                      {copiedToClipboard ? <CheckCircle className="h-5 w-5 text-green-500" /> : <Copy className="h-5 w-5 text-primary" />}
+                    </Button>
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
-
-        <div className="mt-6 flex justify-center">
-          <Link href="/create-event">
-            <Button className="bg-[#9945FF] hover:bg-[#9945FF]/90">
+        <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+          <Button asChild size="lg" className="gap-2">
+            <Link href="/create-event">
+              <Rocket className="h-5 w-5" />
               Create Another Event
-            </Button>
-          </Link>
-          <Link href="/">
-            <Button variant="outline" className="ml-3">
+            </Link>
+          </Button>
+          <Button asChild size="lg" variant="ghost" className="gap-2 border border-primary text-primary hover:bg-primary/10">
+            <Link href="/">
+              <BadgeCheck className="h-5 w-5" />
               Back to Home
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
